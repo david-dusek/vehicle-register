@@ -1,0 +1,70 @@
+scalar Date
+
+enum Fuel {
+    PETROL
+    DIESEL
+    ELECTRIC
+}
+
+interface Vehicle {
+    vin: String!
+    maker: String!
+    model: String!
+    fuel: Fuel
+}
+
+type Car implements Vehicle {
+    id: Long!
+    maker: String!
+    model: String!
+    fuel: Fuel
+    bootCapacity: Float
+}
+
+type Motorcycle implements Vehicle {
+    id: Long!
+    maker: String!
+    model: String!
+    fuel: Fuel
+    handlebarsWidth: Int
+}
+
+type Truck {
+    id: Long!
+    maker: String!
+    model: String!
+    fuel: Fuel
+    numberOfAxles: Int
+}
+
+type Registration {
+    id: Long!
+    validFrom: Date!
+    validTo: Date
+    vehicleVin: String!
+    owner: Owner!
+}
+
+type Owner {
+    id: Long!
+    name: String!
+    dateOfBirth: Date!
+    address: String!
+}
+
+input OwnerInfo {
+    name: String!
+    dateOfBirth: Date!
+    address: String!
+}
+
+type Query {
+    vehicles: [Vehicle!]
+    ownerVehicles(ownerId: Long!): [Vehicle!]
+}
+
+type Mutation {
+    createOwner(OwnerInfo): Owner!
+    createCar(maker: String!, model: String!, numberOfWheels: Int = 4, fuel: Fuel = PETROL, bootCapacity: Float): Car!
+    changeRegistration (originalId: Long!, newOwnerId: Long!): Registration!
+}
